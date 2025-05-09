@@ -1,62 +1,31 @@
+import * as React from 'react';
+import { Box, Card, Typography } from "@mui/joy";
+import { Toc, ViewAgenda, GridViewSharp } from '@mui/icons-material';
+import { styles } from './styles/BasicCard.styles';
 
-import { Card, CardContent, CardCover, Typography, ButtonGroup, Button } from '@mui/joy';
-import Image from "next/image";
-
-// 模拟商品数据，这里可以添加更多数据
-const products = [
-  { id: 1, name: '商品 1', price: 100, image: 'https://df5apg8r0m634.cloudfront.net/p/11791/middle-1-160ae393d89a3db77893d552f041e1c0.webp' },
-  { id: 2, name: '商品 2', price: 200, image: 'https://df5apg8r0m634.cloudfront.net/p/11791/middle-1-160ae393d89a3db77893d552f041e1c0.webp' },
-  { id: 1, name: '商品 1', price: 100, image: 'https://df5apg8r0m634.cloudfront.net/p/11791/middle-1-160ae393d89a3db77893d552f041e1c0.webp' },
-  { id: 2, name: '商品 2', price: 200, image: 'https://df5apg8r0m634.cloudfront.net/p/11791/middle-1-160ae393d89a3db77893d552f041e1c0.webp' },
-  { id: 1, name: '商品 1', price: 100, image: 'https://df5apg8r0m634.cloudfront.net/p/11791/middle-1-160ae393d89a3db77893d552f041e1c0.webp' },
-  { id: 2, name: '商品 2', price: 200, image: 'https://df5apg8r0m634.cloudfront.net/p/11791/middle-1-160ae393d89a3db77893d552f041e1c0.webp' },
-  // 可以添加更多商品
-];
-
-export default function Home() {
+export default function BasicCard() {
   return (
-    <div style={{
-      height: '100vh',
-      overflowY: 'scroll',
-      scrollSnapType: 'y mandatory',
-    }}>
-      {products.map((product) => (
-        <Card
-          key={product.id}
-          variant="outlined"
-          sx={{
-            width: '100%',
-            height: '100vh',
-            scrollSnapAlign: 'start',
-            boxSizing: 'border-box',
-          }}
-        >
-          <CardCover>
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              style={{ objectFit: 'cover' }}
-            />
-          </CardCover>
-          <CardContent>
-            <Typography level="h3" textColor="neutral.800">
-              {product.name}
+    <Box sx={styles.container}>
+      <Box sx={styles.header}>
+        <Box sx={styles.filterButton}>
+          <Toc sx={styles.tocIcon} />
+          <p style={styles.filterText}>Filtrar & Ordenar por:</p>
+        </Box>
+        <Box sx={styles.viewButtons}>
+          <ViewAgenda sx={{ color: '#26ABFF' }} />
+          <GridViewSharp sx={{ color: '#333' }} />
+        </Box>
+      </Box>
+      <Box sx={styles.contentContainer}>
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
+          <Card key={item} sx={styles.card}>
+            <Typography>卡片 {item}</Typography>
+            <Typography level="body-sm">
+              这是一个示例卡片内容，你可以在这里放置任何内容。
             </Typography>
-            <Typography textColor="neutral.600">
-              价格: ¥{product.price}
-            </Typography>
-            <ButtonGroup>
-              <Button variant="solid" color="primary">
-                立即购买
-              </Button>
-              <Button variant="outlined" color="primary">
-                加入购物车
-              </Button>
-            </ButtonGroup>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+          </Card>
+        ))}
+      </Box>
+    </Box>
   );
 }
