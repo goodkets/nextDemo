@@ -56,22 +56,21 @@ export const styles: Styles = {
   contentContainer: {
     flex: 1,
     overflow: 'auto',
-    padding: '20px',
     scrollSnapType: 'y mandatory',
     '&::-webkit-scrollbar': {
-        display: 'none' 
-      },
-      'scrollbarWidth': 'none', 
-      '-ms-overflow-style': 'none', 
-      '&': {
-        '-ms-overflow-style': 'none', 
-        'scrollbarWidth': 'none' 
-      }
+      display: 'none' 
+    },
+    scrollbarWidth: 'none', 
+    msOverflowStyle: 'none', 
+    '&': {
+      msOverflowStyle: 'none', 
+      scrollbarWidth: 'none' 
+    }
   },
   card: {
-    marginBottom: 2,
-    padding: 2,
-    height: 'calc(100vh - 3.5rem)',
+    border:'none',
+    padding: '0 2px',
+    height: 'calc(100vh - 3.7rem)',
     scrollSnapAlign: 'start',
     scrollSnapStop: 'always',
     transition: 'transform 0.2s ease',
