@@ -1,12 +1,16 @@
 'use client'
 import * as React from 'react';
-import { Box, Card, Typography } from "@mui/joy";
+import { Box, Card, Typography,Button } from "@mui/material";
 import { Toc, ViewAgenda, GridViewSharp } from '@mui/icons-material';
 import {Swiper, SwiperSlide} from 'swiper/react';
 import 'swiper/css';
 import { styles } from './styles/BasicCard.styles';
+import { getListAll } from '@/app/api/list';
 
 export default function BasicCard() {
+  //调用接口
+  // const list = getListAll({});
+  // 前端组件中调用
   const [startX, setStartX] = React.useState(0);
   const [startY, setStartY] = React.useState(0);
 //记录开始的坐标
@@ -51,6 +55,9 @@ export default function BasicCard() {
           <Toc sx={styles.tocIcon} />
           <p style={styles.filterText}>Filtrar & Ordenar por:</p>
         </Box>
+        <Button >
+            asdasd
+          </Button>
         <Box sx={styles.viewButtons}>
           <ViewAgenda sx={{ color: '#26ABFF' }} />
           <GridViewSharp sx={{ color: '#333' }} />
@@ -59,19 +66,15 @@ export default function BasicCard() {
       <Box sx={styles.contentContainer}>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
           <Card key={item} sx={styles.card}>
-            <Typography>
             <Swiper
               spaceBetween={50}
               slidesPerView={3}
-              onSlideChange={() => console.log('slide change')}
-              onSwiper={(swiper) => console.log(swiper)}
             >
               <SwiperSlide>Slide 1</SwiperSlide>
               <SwiperSlide>Slide 2</SwiperSlide>
               <SwiperSlide>Slide 3</SwiperSlide>
               <SwiperSlide>Slide 4</SwiperSlide>
              </Swiper>
-            </Typography>
             <Typography level="body-sm">
               这是一个示例卡片内容，你可以在这里放置任何内容。
             </Typography>
