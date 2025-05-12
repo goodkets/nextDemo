@@ -59,7 +59,6 @@ export default function BasicCard() {
 
   return (
     <Box 
-      component="div"
       sx={styles.container}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
