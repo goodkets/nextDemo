@@ -1,26 +1,40 @@
 'use client'
 import * as React from 'react';
-import { Box, Card, Typography,Button } from "@mui/material";
+import { useState } from 'react';
+import { Box, Card, Typography, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { Toc, ViewAgenda, GridViewSharp } from '@mui/icons-material';
-import {Swiper, SwiperSlide} from 'swiper/react';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { styles } from './styles/BasicCard.styles';
-import { getListAll } from '@/app/api/list';
+// import { getListAll } from '@/app/api/list';
+
 
 export default function BasicCard() {
   //调用接口
   // const list = getListAll({});
-  // 前端组件中调用
-  const [startX, setStartX] = React.useState(0);
-  const [startY, setStartY] = React.useState(0);
-//记录开始的坐标
-  const handleTouchStart = (e: React.TouchEvent) => {
+  const [view, setView] = useState('red');
+  const [colorOptions] = useState([
+    { value: 'red', color: '#FF5733' },
+    { value: 'yellow', color: '#FFC300' },
+    { value: 'green', color: '#33FF57' },
+    { value: 'blue', color: '#26ABFF' },
+    { value: 'purple', color: '#8E44AD' },
+  ])
+  const [startX, setStartX] = useState(0);
+  const [startY, setStartY] = useState(0);
+  const handleChange = (event, newView) => {
+    if (newView !== null) {
+      setView(newView);
+    }
+  };
+  //记录开始的坐标
+  const handleTouchStart = (e: TouchEvent) => {
     const touch = e.touches[0];
     setStartX(touch.clientX);
     setStartY(touch.clientY);
   };
-//记录偏移量（结束）
-  const handleTouchMove = (e: React.TouchEvent) => {
+  //记录偏移量（结束）
+  const handleTouchMove = (e: TouchEvent) => {
     if (e.touches.length > 1) {
       // 处理多指触摸
       return;
@@ -45,6 +59,7 @@ export default function BasicCard() {
 
   return (
     <Box 
+      component="div"
       sx={styles.container}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
@@ -55,9 +70,6 @@ export default function BasicCard() {
           <Toc sx={styles.tocIcon} />
           <p style={styles.filterText}>Filtrar & Ordenar por:</p>
         </Box>
-        <Button >
-            asdasd
-          </Button>
         <Box sx={styles.viewButtons}>
           <ViewAgenda sx={{ color: '#26ABFF' }} />
           <GridViewSharp sx={{ color: '#333' }} />
@@ -66,18 +78,58 @@ export default function BasicCard() {
       <Box sx={styles.contentContainer}>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
           <Card key={item} sx={styles.card}>
-            <Swiper
-              spaceBetween={50}
-              slidesPerView={3}
-            >
-              <SwiperSlide>Slide 1</SwiperSlide>
-              <SwiperSlide>Slide 2</SwiperSlide>
-              <SwiperSlide>Slide 3</SwiperSlide>
-              <SwiperSlide>Slide 4</SwiperSlide>
-             </Swiper>
-            <Typography level="body-sm">
-              这是一个示例卡片内容，你可以在这里放置任何内容。
-            </Typography>
+            <Box sx={styles.productContainer}>
+              <Swiper
+                spaceBetween={50}
+                slidesPerView={3}
+              >
+                <SwiperSlide>Slide 1</SwiperSlide>
+                <SwiperSlide>Slide 2</SwiperSlide>
+                <SwiperSlide>Slide 3</SwiperSlide>
+                <SwiperSlide>Slide 4</SwiperSlide>
+              </Swiper>
+            </Box>
+            <Box sx={styles.flick}>
+              <Box sx={styles.flickContainer}>
+                <Typography
+                  className="price"
+                  component="div"
+                >
+                  33.45￥
+                </Typography>
+                <Typography
+                  className="product-code"
+                  variant="body2"
+                  component="div"
+                >
+                  S43131
+                </Typography>
+                <Box>
+                  <ToggleButtonGroup
+                    value={view}
+                    exclusive
+                    onChange={handleChange}
+                    sx={styles.colorToggleGroup}
+                  >
+                    {colorOptions.map((option) => (
+                      <ToggleButton 
+                        key={option.value} 
+                        value={option.value}
+                        sx={styles.colorToggleButton}
+                      >
+                        <Box 
+                          sx={{...styles.colorCircle, 
+                          backgroundImage: `url('https://df5apg8r0m634.cloudfront.net/images/e2e229733483885b0d0b83c2946eb75c.png?inline')`
+                          }}
+                         />
+                      </ToggleButton>
+                    ))}
+                  </ToggleButtonGroup>
+                </Box>
+                <Box>
+                </Box>
+              </Box>
+            </Box>
           </Card>
         ))}
       </Box>
