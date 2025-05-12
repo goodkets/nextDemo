@@ -1,8 +1,8 @@
 'use client'
 import * as React from 'react';
 import { useState } from 'react';
-import { Box, Card, Typography, ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { Toc, ViewAgenda, GridViewSharp } from '@mui/icons-material';
+import { Box, Card, Typography, ToggleButton, ToggleButtonGroup, Button} from "@mui/material";
+import { Toc, ViewAgenda, GridViewSharp,FavoriteBorder, Launch } from '@mui/icons-material';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { styles } from './styles/BasicCard.styles';
@@ -124,6 +124,15 @@ export default function BasicCard() {
                       </ToggleButton>
                     ))}
                   </ToggleButtonGroup>
+                  <Box sx={styles.fickButtom}>
+                    <Box className="fickIcon">
+                      <FavoriteBorder />
+                      <Launch />
+                    </Box>
+                    <Box>
+                      <Button className='btn' variant="contained">View Details</Button>
+                    </Box>  
+                  </Box>
                 </Box>
                 <Box>
                 </Box>

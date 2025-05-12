@@ -28,6 +28,8 @@ interface Styles {
   colorToggleGroup: SxProps;
   colorToggleButton: SxProps;
   colorCircle: SxProps;
+  // 8. 尺寸选择相关
+  fickButtom: SxProps;
 }
 
 export const styles: Styles = {
@@ -173,5 +175,32 @@ export const styles: Styles = {
     borderRadius: '50%',
     border: 'none',
     transition: 'background-color 0.2s ease'
+  },
+  fickButtom: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    '& .fickIcon' : {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent:'space-between',
+      gap: '1.2rem',
+      marginLeft:"-1px",
+      marginTop: '7px',
+      fontSize: '0.45rem',
+      verticalAlign: 'middle',
+      fontWeight: 'bold',
+      color: 'rgb(50, 51, 51)'
+    },
+    '& .btn' : {
+      backgroundColor:"rgb(38, 171, 255)",
+      fontSize: '0.8rem',
+      fontWeight: 'bold',
+      color: 'rgb(255, 255, 255)s',
+      fontFamily: "'Roboto-Regular', Helvetica, Arial, sans-serif",
+      minWidth: '9rem',
+      height: '2rem',
+      textTransform: 'none'
+    }
   }
 };
