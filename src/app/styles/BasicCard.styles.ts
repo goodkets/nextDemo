@@ -30,6 +30,7 @@ interface Styles {
   colorCircle: SxProps;
   // 8. 尺寸选择相关
   fickButtom: SxProps;
+  swiperPagination: SxProps;
 }
 
 export const styles: Styles = {
@@ -107,7 +108,7 @@ export const styles: Styles = {
     zIndex: 1,
     height: '655px',
     width: '100%',
-    backgroundColor: '#ccc'
+    backgroundColor: 'rgb(247, 249, 250)' 
   },
 
   // 6. 底部信息区域
@@ -174,7 +175,7 @@ export const styles: Styles = {
     height: '1.3rem',
     borderRadius: '50%',
     border: 'none',
-    transition: 'background-color 0.2s ease'
+    transition: 'background-color 0.2s ease',
   },
   fickButtom: {
     display: 'flex',
@@ -202,5 +203,18 @@ export const styles: Styles = {
       height: '2rem',
       textTransform: 'none'
     }
-  }
+  },
+  swiperPagination: {
+    position: 'absolute',
+    top: '10px',
+    right: '10px',
+    width: 'auto',
+    left: 'auto',
+    color: '#fff',
+    background: 'rgba(0,0,0,0.3)',
+    padding: '4px 8px',
+    borderRadius: '12px',
+    fontSize: '12px',
+    height: '20px',
+  },
 };

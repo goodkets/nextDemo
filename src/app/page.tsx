@@ -1,11 +1,13 @@
 'use client'
-import * as React from 'react';
 import { useState } from 'react';
 import { Box, Card, Typography, ToggleButton, ToggleButtonGroup, Button} from "@mui/material";
 import { Toc, ViewAgenda, GridViewSharp,FavoriteBorder, Launch } from '@mui/icons-material';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from 'swiper/modules';  
 import 'swiper/css';
+import 'swiper/css/pagination';
 import { styles } from './styles/BasicCard.styles';
+import Image from 'next/image';
 // import { getListAll } from '@/app/api/list';
 
 
@@ -13,13 +15,25 @@ export default function BasicCard() {
   //调用接口
   // const list = getListAll({});
   const [view, setView] = useState('red');
-  const [colorOptions] = useState([
+  const [colorOptions] = useState([ 
     { value: 'red', color: '#FF5733' },
     { value: 'yellow', color: '#FFC300' },
     { value: 'green', color: '#33FF57' },
     { value: 'blue', color: '#26ABFF' },
     { value: 'purple', color: '#8E44AD' },
   ])
+  const [swiperData] = useState([
+    {
+      id: 1,
+      imageUrl: "https://df5apg8r0m634.cloudfront.net/p/5914/1-model-image-5914-1563790641.webp",
+      alt: "Product 1"
+    },
+    {
+      id: 2,
+      imageUrl: "https://df5apg8r0m634.cloudfront.net/p/11791/middle-2-160ae393d89a3db77893d552f041e1c0.jpg",
+      alt: "Product 2"
+    }
+  ]);
   const [startX, setStartX] = useState(0);
   const [startY, setStartY] = useState(0);
   const handleChange = (event, newView) => {
@@ -78,14 +92,39 @@ export default function BasicCard() {
         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
           <Card key={item} sx={styles.card}>
             <Box sx={styles.productContainer}>
-              <Swiper
-                spaceBetween={50}
-                slidesPerView={3}
+            <Swiper
+                spaceBetween={10}
+                slidesPerView={1}
+                pagination={{
+                  type: 'fraction',
+                  el: '.swiper-pagination',
+                  formatFractionCurrent: (number) => number,
+                  formatFractionTotal: (number) => number,
+                }}
+                modules={[Pagination]}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  position: 'relative'
+                }}
               >
-                <SwiperSlide>Slide 1</SwiperSlide>
-                <SwiperSlide>Slide 2</SwiperSlide>
-                <SwiperSlide>Slide 3</SwiperSlide>
-                <SwiperSlide>Slide 4</SwiperSlide>
+                {swiperData.map((slide) => (
+                  <SwiperSlide key={slide.id}>
+                    <Image
+                      src={slide.imageUrl}
+                      alt={slide.alt}
+                      width={300}
+                      height={300}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'contain',
+                        backgroundColor: 'rgb(247, 249, 250)'
+                      }}
+                    />
+                  </SwiperSlide>
+                ))}
+                <Box  sx={styles.swiperPagination}></Box>
               </Swiper>
             </Box>
             <Box sx={styles.flick}>
@@ -119,6 +158,7 @@ export default function BasicCard() {
                         <Box 
                           sx={{...styles.colorCircle, 
                           backgroundImage: `url('https://df5apg8r0m634.cloudfront.net/images/e2e229733483885b0d0b83c2946eb75c.png?inline')`
+
                           }}
                          />
                       </ToggleButton>
