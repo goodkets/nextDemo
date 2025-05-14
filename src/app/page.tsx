@@ -14,7 +14,7 @@ import { getListAll } from '@/app/api/list';
 
 export default function BasicCard() {
   const [view, setView] = useState('red');
-  const [colorOptions] = useState([])
+  const [colorOptions] = useState([]);
   const [swiperData] = useState([]);
   const [startX, setStartX] = useState(0);
   const [startY, setStartY] = useState(0);
@@ -101,11 +101,11 @@ export default function BasicCard() {
                 modules={[Pagination]}
                 className='swiperContainer'
               >
-                {listData[0].swiperData.map((slide) => (
+                {item.swiperData[0].images.map((slide) => (
                   <SwiperSlide key={slide.id} >
                     <Image
                       className='swiperImage'
-                      src={slide.imageUrl}
+                      src={slide.url}
                       alt={slide.alt}
                       width={800}
                       height={800}
@@ -126,14 +126,14 @@ export default function BasicCard() {
                   className="price"
                   component="div"
                 >
-                  {listData[0].money} €
+                  {item.money} €
                 </Typography>
                 <Typography
                   className="product-code"
                   variant="body2"
                   component="div"
                 >
-                  {listData[0].alt}
+                  {item.alt}
                 </Typography>
                 <Box>
                   <ToggleButtonGroup
@@ -142,16 +142,15 @@ export default function BasicCard() {
                     onChange={handleChange}
                     sx={styles.colorToggleGroup}
                   >
-                    {listData[0].colorBg.map((option) => (
+                    {item.colorBg.map((option) => (
                       <ToggleButton 
-                        key={option.value} 
-                        value={option.value}
+                        key={option.id} 
+                        value={option.id}
                         sx={styles.colorToggleButton}
                       >
                         <Box 
                           sx={{...styles.colorCircle, 
                           backgroundImage: `url(${option.url})`
-
                           }}
                          />
                       </ToggleButton>
