@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Card, Typography, ToggleButton, ToggleButtonGroup, Button} from "@mui/material";
 import { Toc, ViewAgenda, GridViewSharp,FavoriteBorder, Launch } from '@mui/icons-material';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -13,17 +13,25 @@ import { getListAll } from '@/app/api/list';
 
 
 export default function BasicCard() {
-  //调用接口
-  const getList = async () => {
-    const res = await getListAll({});
-    return res;
-  }
-  const listData = getList();
   const [view, setView] = useState('red');
-  const [colorOptions] = useState([...listData[0].colorBg])
-  const [swiperData] = useState([...listData[0].swiperData]);
+  const [colorOptions] = useState([])
+  const [swiperData] = useState([]);
   const [startX, setStartX] = useState(0);
   const [startY, setStartY] = useState(0);
+  const [listData, setListData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await getListAll({});
+        setListData(res);
+        // setIsLoading(false);
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+        // setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
   const handleChange = (event, newView) => {
     if (newView !== null) {
       setView(newView);
@@ -93,7 +101,7 @@ export default function BasicCard() {
                 modules={[Pagination]}
                 className='swiperContainer'
               >
-                {swiperData.map((slide) => (
+                {listData[0].swiperData.map((slide) => (
                   <SwiperSlide key={slide.id} >
                     <Image
                       className='swiperImage'
@@ -142,7 +150,7 @@ export default function BasicCard() {
                       >
                         <Box 
                           sx={{...styles.colorCircle, 
-                          backgroundImage: url(option.url)
+                          backgroundImage: `url(${option.url})`
 
                           }}
                          />
