@@ -1,5 +1,11 @@
 import axiosInstance from "@/app/utils/axios";
-const getListAll = (body) => {
-  return axiosInstance.post("/home/list",{...body});
+
+interface GetListParams {
+  color?: string;
+}
+
+const getListAll = (params: GetListParams) => {
+  return axiosInstance.post("/home/list", params);
 };
+
 export { getListAll };

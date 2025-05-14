@@ -8,32 +8,20 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { styles } from './styles/BasicCard.styles';
 import Image from 'next/image';
-// import { getListAll } from '@/app/api/list';
+import BackToTop from "@/app/components/backToTop/BackToTop"
+import { getListAll } from '@/app/api/list';
 
 
 export default function BasicCard() {
   //调用接口
-  // const list = getListAll({});
+  const getList = async () => {
+    const res = await getListAll({});
+    return res;
+  }
+  const listData = getList();
   const [view, setView] = useState('red');
-  const [colorOptions] = useState([ 
-    { value: 'red', color: '#FF5733' },
-    { value: 'yellow', color: '#FFC300' },
-    { value: 'green', color: '#33FF57' },
-    { value: 'blue', color: '#26ABFF' },
-    { value: 'purple', color: '#8E44AD' },
-  ])
-  const [swiperData] = useState([
-    {
-      id: 1,
-      imageUrl: "https://df5apg8r0m634.cloudfront.net/p/5914/1-model-image-5914-1563790641.webp",
-      alt: "Product 1"
-    },
-    {
-      id: 2,
-      imageUrl: "https://df5apg8r0m634.cloudfront.net/p/11791/middle-2-160ae393d89a3db77893d552f041e1c0.jpg",
-      alt: "Product 2"
-    }
-  ]);
+  const [colorOptions] = useState([...listData[0].colorBg])
+  const [swiperData] = useState([...listData[0].swiperData]);
   const [startX, setStartX] = useState(0);
   const [startY, setStartY] = useState(0);
   const handleChange = (event, newView) => {
@@ -80,7 +68,7 @@ export default function BasicCard() {
     >
       <Box sx={styles.header}>
         <Box sx={styles.filterButton}>
-          <Toc sx={styles.tocIcon} />
+          <Box sx={styles.tocIcon} />
           <p style={styles.filterText}>Filtrar & Ordenar por:</p>
         </Box>
         <Box sx={styles.viewButtons}>
@@ -89,12 +77,13 @@ export default function BasicCard() {
         </Box>
       </Box>
       <Box sx={styles.contentContainer}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
+        {listData.map((item) => (
           <Card key={item} sx={styles.card}>
             <Box sx={styles.productContainer}>
             <Swiper
                 spaceBetween={10}
                 slidesPerView={1}
+                resistanceRatio={0}
                 pagination={{
                   type: 'fraction',
                   el: '.swiper-pagination',
@@ -102,29 +91,25 @@ export default function BasicCard() {
                   formatFractionTotal: (number) => number,
                 }}
                 modules={[Pagination]}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  position: 'relative'
-                }}
+                className='swiperContainer'
               >
                 {swiperData.map((slide) => (
-                  <SwiperSlide key={slide.id}>
+                  <SwiperSlide key={slide.id} >
                     <Image
+                      className='swiperImage'
                       src={slide.imageUrl}
                       alt={slide.alt}
-                      width={300}
-                      height={300}
+                      width={800}
+                      height={800}
+                      quality={100}
+                      property={'true'} 
                       style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'contain',
-                        backgroundColor: 'rgb(247, 249, 250)'
+                        objectFit:  slide.fitStyle,
                       }}
                     />
                   </SwiperSlide>
                 ))}
-                <Box  sx={styles.swiperPagination}></Box>
+                <div className='swiper-pagination'></div>
               </Swiper>
             </Box>
             <Box sx={styles.flick}>
@@ -133,14 +118,14 @@ export default function BasicCard() {
                   className="price"
                   component="div"
                 >
-                  33.45￥
+                  {listData[0].money} €
                 </Typography>
                 <Typography
                   className="product-code"
                   variant="body2"
                   component="div"
                 >
-                  S43131
+                  {listData[0].alt}
                 </Typography>
                 <Box>
                   <ToggleButtonGroup
@@ -149,7 +134,7 @@ export default function BasicCard() {
                     onChange={handleChange}
                     sx={styles.colorToggleGroup}
                   >
-                    {colorOptions.map((option) => (
+                    {listData[0].colorBg.map((option) => (
                       <ToggleButton 
                         key={option.value} 
                         value={option.value}
@@ -157,7 +142,7 @@ export default function BasicCard() {
                       >
                         <Box 
                           sx={{...styles.colorCircle, 
-                          backgroundImage: `url('https://df5apg8r0m634.cloudfront.net/images/e2e229733483885b0d0b83c2946eb75c.png?inline')`
+                          backgroundImage: url(option.url)
 
                           }}
                          />
@@ -166,8 +151,8 @@ export default function BasicCard() {
                   </ToggleButtonGroup>
                   <Box sx={styles.fickButtom}>
                     <Box className="fickIcon">
-                      <FavoriteBorder />
-                      <Launch />
+                      <FavoriteBorder sx={{fontSize: '1.8rem'}}  />
+                      <Launch sx={{fontSize: '1.8rem'}} />
                     </Box>
                     <Box>
                       <Button className='btn' variant="contained">View Details</Button>
@@ -181,6 +166,7 @@ export default function BasicCard() {
           </Card>
         ))}
       </Box>
+      <BackToTop totalPages={9}   />
     </Box>
   );
 }

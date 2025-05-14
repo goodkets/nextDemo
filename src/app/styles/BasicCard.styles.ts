@@ -30,7 +30,6 @@ interface Styles {
   colorCircle: SxProps;
   // 8. 尺寸选择相关
   fickButtom: SxProps;
-  swiperPagination: SxProps;
 }
 
 export const styles: Styles = {
@@ -49,30 +48,36 @@ export const styles: Styles = {
     justifyContent: 'space-between',
     width: '100vw',
     height: '3.6rem',
-    padding: '0 0.5rem',
+    padding: '0 0.6rem',
+    fontFamily: '"Roboto-Regular",Helvetica,Arial,sans-serif',
     backgroundColor: 'white',
     alignItems: 'center',
   },
   filterButton: {
     display: 'flex',
     alignItems: 'center',
-    fontSize: '0.8rem',
-    padding: '0 0.3rem',
-    border: '1px solid #707070',
+    fontSize: '1rem',
+    flexShrink:0,
+    backgroundColor: '#fff',
     borderRadius: '4px',
+    border: '1px solid #707070',
+    padding: '0.2rem 0.5rem'
   },
   filterText: {
-    fontSize: '0.8rem',
-    fontWeight: '800',
+    fontWeight: 'bolder',
     color: '#121a24',
-    marginLeft: '0.1rem',
-    fontFamily: '"Roboto-Regular",Helvetica,Arial,sans-serif',
+    marginLeft: '0.5rem',
+    // fontFamily: '"Roboto-Regular",Helvetica,Arial,sans-serif',
   },
   tocIcon: {
-    transform: 'rotate(180deg)',
-    backgroundSize: '100%',
-    fontSize: '1.8rem',
-    color: '#4B4953'
+    width: '16px',
+    height: '21px',
+    background: 'url("https://df5apg8r0m634.cloudfront.net/images/2024/0731/a696671b6c8e7e9d93f0eccfb873a102.webp") no-repeat center center',
+    backgroundSize: '100%' 
+    // transform: 'rotate(180deg)',
+    // backgroundSize: '100%',
+    // fontSize: '1.8rem',
+    // color: '#4B4953'
   },
   viewButtons: {
     display: 'flex',
@@ -96,7 +101,7 @@ export const styles: Styles = {
   card: {
     position: 'relative',
     border: 'none',
-    height: 'calc(100vh - 3.7rem)',
+    height: 'calc(100vh - 3.6rem)',
     scrollSnapAlign: 'start',
     scrollSnapStop: 'always',
     transition: 'transform 0.2s ease',
@@ -106,9 +111,32 @@ export const styles: Styles = {
   productContainer: {
     position: 'absolute',
     zIndex: 1,
-    height: '655px',
+    height: 'calc(100vh - 11.5rem)',
     width: '100%',
-    backgroundColor: 'rgb(247, 249, 250)' 
+    backgroundColor: 'rgb(247, 249, 250)' ,
+    '& .swiperContainer': {
+      width: '100%',
+      height: '100%',
+      position: 'relative',
+    },
+    '& .swiperImage': {
+      maxWidth: 'unset',
+      width: '100%',
+      backgroundColor: 'rgb(247, 249, 250)'
+    },
+    '&  .swiper-pagination': {
+        position: 'absolute',
+        top: '10px',
+        right: '10px',
+        width: 'auto',
+        left: 'auto',
+        color: '#fff',
+        background: 'rgba(0,0,0,0.3)',
+        padding: '4px 8px',
+        borderRadius: '12px',
+        fontSize: '12px',
+        height: '20px',
+    }
   },
 
   // 6. 底部信息区域
@@ -126,13 +154,13 @@ export const styles: Styles = {
   flickContainer: {
     width: '100%',
     height: '100%',
-    borderRadius: '16px',
+    borderRadius: '16px 16px 0 0',
     backgroundColor: 'rgb(255, 255, 255)',
     padding: '6px 16px',
     '& .price': {
       fontSize: '18px',
       fontWeight: 600,
-      fontFamily: 'Roboto-Medium, sans-serif',
+      fontFamily: 'Roboto-Medium',
       color: 'rgb(18, 26, 36)',
     },
     '& .product-code': {
@@ -171,8 +199,8 @@ export const styles: Styles = {
     }
   },
   colorCircle: {
-    width: '1.3rem',
-    height: '1.3rem',
+    width: '1.4rem',
+    height: '1.4rem',
     borderRadius: '50%',
     border: 'none',
     transition: 'background-color 0.2s ease',
@@ -195,26 +223,13 @@ export const styles: Styles = {
     },
     '& .btn' : {
       backgroundColor:"rgb(38, 171, 255)",
-      fontSize: '0.8rem',
+      fontSize: '1.0rem',
       fontWeight: 'bold',
       color: 'rgb(255, 255, 255)s',
       fontFamily: "'Roboto-Regular', Helvetica, Arial, sans-serif",
-      minWidth: '9rem',
-      height: '2rem',
+      width: '10.6rem',
+      height: '2.3rem',
       textTransform: 'none'
     }
-  },
-  swiperPagination: {
-    position: 'absolute',
-    top: '10px',
-    right: '10px',
-    width: 'auto',
-    left: 'auto',
-    color: '#fff',
-    background: 'rgba(0,0,0,0.3)',
-    padding: '4px 8px',
-    borderRadius: '12px',
-    fontSize: '12px',
-    height: '20px',
   },
 };
