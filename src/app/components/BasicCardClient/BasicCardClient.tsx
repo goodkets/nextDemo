@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';  
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { styles } from '@/app/styles/BasicCard.styles';
+import { styles } from '@/app/components/BasicCardClient/modules.style/BasicCard.styles';
 import Image from 'next/image';
 import BackToTop from '@/app/components/backToTop/BackToTop';
 import { ProductData, SelectedColors } from '@/app/types/product';
@@ -18,7 +18,7 @@ interface BasicCardClientProps {
 }
 
 export default function BasicCardClient({ initialData, initialColors }: BasicCardClientProps) {
-  const [listData, setListData] = useState<ProductData[]>(initialData);
+  const [listData] = useState<ProductData[]>(initialData);
   const [selectedColors, setSelectedColors] = useState<SelectedColors>(initialColors);
     // 预加载图片
     const preloadImages = async (data: ProductData[]) => {
@@ -27,7 +27,8 @@ export default function BasicCardClient({ initialData, initialColors }: BasicCar
             .find(data => data.id === selectedColors[item.id])?.images
             .map(slide => {
               return new Promise((resolve, reject) => {
-                const img = new Image();
+                // 使用浏览器原生的 Image 对象
+                const img = new window.Image();
                 img.src = slide.url ? slide.url.trim() : '';
                 
                 const timer = setTimeout(() => {
@@ -42,7 +43,7 @@ export default function BasicCardClient({ initialData, initialColors }: BasicCar
                 img.onerror = () => {
                   clearTimeout(timer);
                   // 失败后重试一次
-                  const retryImg = new Image();
+                  const retryImg = new window.Image();
                   retryImg.src = slide.url ? slide.url.trim() : '';
                   retryImg.onload = resolve;
                   retryImg.onerror = reject;
@@ -50,7 +51,7 @@ export default function BasicCardClient({ initialData, initialColors }: BasicCar
               });
             }) || []
         );
-    
+
         return Promise.allSettled(imagePromises);
       };
 

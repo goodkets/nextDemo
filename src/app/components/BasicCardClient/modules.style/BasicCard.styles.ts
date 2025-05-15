@@ -113,7 +113,7 @@ export const styles: Styles = {
     zIndex: 1,
     height: 'calc(100vh - 11.5rem)',
     width: '100%',
-    backgroundColor: 'rgb(247, 249, 250)' ,
+    backgroundImage: 'linear-gradient(to top, rgb(247, 249, 250) 0%, rgb(255, 255, 255) 50%)',
     '& .swiperContainer': {
       width: '100%',
       height: '100%',

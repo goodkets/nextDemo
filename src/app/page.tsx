@@ -194,14 +194,18 @@
 // }
 
 
-import { ProductData, SelectedColors } from '@/app/types/product';
-import BasicCardClient from '@/app/components/BasicCardClient';
+import {  SelectedColors, ProductData } from '@/app/types/product';
+import BasicCardClient from '@/app/components/BasicCardClient/BasicCardClient';
 import { getListAll } from '@/app/api/list';
 
 async function getData() {
-  const response = await getListAll();
-  if (response.status === 200) {
-    return response.data.list;
+  try {
+    const response = await getListAll();
+    if (response.status === 200) {
+      return response.data.list;
+    }
+  } catch (error) {
+    console.error('Error in getData:', error); // 捕获并输出错误信息
   }
   return [];
 }
@@ -210,11 +214,10 @@ export default async function BasicCard() {
   const listData = await getData();
   const initialColors: SelectedColors = {};
   
-  listData.forEach(item => {
+  listData.forEach((item: ProductData) => {
     if (item.colorBg.length > 0) {
       initialColors[item.id] = item.colorBg[0].id;
     }
   });
-
   return <BasicCardClient initialData={listData} initialColors={initialColors} />;
 }

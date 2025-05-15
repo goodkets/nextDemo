@@ -42,3 +42,4 @@ export type SelectedColors = Record<number, number>;
 
 // 颜色选择事件处理器类型
 export type ColorChangeHandler = (cardId: number, newColorId: number | null) => void;
+

@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { Box } from '@mui/material';
 import { KeyboardArrowUp } from '@mui/icons-material';
-import { styles } from './BackToTop.styles';
+import { styles } from './modules.style/BackToTop.styles';
+import { animateScroll } from 'react-scroll';
 
 interface BackToTopProps {
   totalPages: number;
@@ -10,37 +11,53 @@ interface BackToTopProps {
 export default function BackToTop({ totalPages }: BackToTopProps) {
   const [isScrolling, setIsScrolling] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const timerRef = useRef<NodeJS.Timeout>();
-
-  // 回到顶部函数
+  // 传入初始值 null
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
   const scrollToTop = () => {
     const container = document.getElementById('contentContainer');
     if (container) {
-      container.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+      // 临时移除 scrollSnapType 属性
+      container.style.scrollSnapType = 'none';
+
+      animateScroll.scrollToTop({
+        duration: 600,
+        smooth: 'easeInOutQuad',
+        containerId: 'contentContainer',
+        delay: 0,
+        spy: true,
+        offset: 0,
       });
+      setTimeout(() => {
+        container.style.scrollSnapType = '';
+      }, 601);
     }
+  }
+
+  const handleScrollState = () => {
+    setIsScrolling(true);
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    timerRef.current = setTimeout(() => {
+      setIsScrolling(false);
+    }, 50);
   };
 
-  // 改进的卡片观察逻辑
+  // 合并监听逻辑
   useEffect(() => {
     const container = document.getElementById('contentContainer');
     if (!container) {
       return;
     }
 
+    // 卡片观察器--观察滚动位置
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const cardIndex = Number(entry.target.getAttribute('data-index')) || 1;
             setCurrentPage(cardIndex);
-            setIsScrolling(true);
-            clearTimeout(timerRef.current);
-            timerRef.current = setTimeout(() => {
-              setIsScrolling(false);
-            }, 50);
+            handleScrollState();
           }
         });
       },
@@ -60,28 +77,21 @@ export default function BackToTop({ totalPages }: BackToTopProps) {
       observer.observe(card);
     });
 
-    return () => {
-      observer.disconnect();
-      clearTimeout(timerRef.current);
-    };
-  }, [totalPages]);
-
-  // 滚动事件监听增强版
-  useEffect(() => {
-    const container = document.getElementById('contentContainer');
-    if (!container) return;
-
+    // 滚动事件监听
     const handleScroll = () => {
-      setIsScrolling(true);
-      clearTimeout(timerRef.current);
-      timerRef.current = setTimeout(() => {
-        setIsScrolling(false);
-      }, 50);
+      handleScrollState();
     };
 
     container.addEventListener('scroll', handleScroll);
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, []);
+
+    return () => {
+      observer.disconnect();
+      container.removeEventListener('scroll', handleScroll);
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, [totalPages]);
 
   return (
     <Box>
@@ -92,8 +102,8 @@ export default function BackToTop({ totalPages }: BackToTopProps) {
           {totalPages}
         </Box>
       ) : (
-        <Box 
-          sx={{...styles.backToTopStyles, cursor: 'pointer'}}
+        <Box
+          sx={{ ...styles.backToTopStyles, cursor: 'pointer' }}
           onClick={scrollToTop}
         >
           <KeyboardArrowUp />
