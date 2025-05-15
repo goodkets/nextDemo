@@ -58,10 +58,10 @@ export default function BackToTop({ totalPages }: BackToTopProps) {
     return () => container?.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 回到顶部函数
-  const scrollToTop = (e) => {
+  // // 回到顶部函数
+  // const scrollToTop = (e) => {
    
-  };
+  // };
 
   return (
     <Box>
@@ -78,7 +78,7 @@ export default function BackToTop({ totalPages }: BackToTopProps) {
       ) : (
         // 未滑动时显示回到顶部按钮
         <Box
-          onClick={scrollToTop}
+          // onClick={scrollToTop}
           sx={styles.backToTopStyles}
         >
           <KeyboardArrowUp />

@@ -5,7 +5,7 @@ interface GetListParams {
 }
 
 const getListAll = (params: GetListParams) => {
-  return axiosInstance.post("/home/list", params);
+  return axiosInstance.post("/list", params);
 };
 
 export { getListAll };

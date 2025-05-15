@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
   images: {
     domains: ['df5apg8r0m634.cloudfront.net'], // 允许加载的图片域名
   },
-  reactStrictMode: false
+  reactStrictMode: false,
 };
 
 export default nextConfig;

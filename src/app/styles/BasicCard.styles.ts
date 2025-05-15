@@ -120,9 +120,8 @@ export const styles: Styles = {
       position: 'relative',
     },
     '& .swiperImage': {
-      maxWidth: 'unset',
+      height: '100%',
       width: '100%',
-      backgroundColor: 'rgb(247, 249, 250)'
     },
     '&  .swiper-pagination': {
         position: 'absolute',
@@ -229,7 +228,8 @@ export const styles: Styles = {
       fontFamily: "'Roboto-Regular', Helvetica, Arial, sans-serif",
       width: '10.6rem',
       height: '2.3rem',
-      textTransform: 'none'
+      textTransform: 'none',
+      boxShadow: 'none'
     }
   },
 };
