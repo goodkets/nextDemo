@@ -42,7 +42,12 @@ export const styles: Styles = {
     right: '1.1rem',
     bottom: '5.53rem',
     position: 'fixed',
-    zIndex: 61
+    zIndex: 61,
+    // 确保没有默认的点击效果
+    '&:active': {
+      boxShadow: 'none', // 保持原有阴影不变
+      transform: 'scale(1)' // 防止缩放效果
+    }
   },
   horizontalLineStyle: {
       width: '1.3rem',

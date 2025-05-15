@@ -17,7 +17,7 @@
 //   const [selectedColors, setSelectedColors] = useState<SelectedColors>({});
 //   // 预加载图片
 //   const preloadImages = async (data: ProductData[]) => {
-//     const imagePromises = data.flatMap((item, index) => 
+//     const imagePromises = data.flatMap((item) => 
 //       item.swiperData
 //         .find(data => data.id === selectedColors[item.id])?.images
 //         .map(slide => {
@@ -92,7 +92,7 @@
 //   };
 
 //   return (
-//     <Box sx={styles.container}>
+//     <Box sx={styles.container} >
 //       <Box sx={styles.header}>
 //         <Box sx={styles.filterButton}>
 //           <Box sx={styles.tocIcon} />
@@ -103,9 +103,9 @@
 //           <GridViewSharp sx={{ color: '#333' }} />
 //         </Box>
 //       </Box>
-//       <Box sx={styles.contentContainer}>
+//       <Box sx={styles.contentContainer} id="contentContainer">
 //         {listData.map((item) => (
-//           <Card key={item.id} sx={styles.card}>
+//           <Card key={item.id} sx={styles.card} >
 //             <Box sx={styles.productContainer}>
 //               <Swiper
 //                 spaceBetween={10}
@@ -188,31 +188,33 @@
 //           </Card>
 //         ))}
 //       </Box>
-//       {/* <BackToTop totalPages={listData.length} /> */}
+//       <BackToTop totalPages={listData.length}  />
 //     </Box>
 //   );
 // }
 
-// app/page.tsx
-import { getListAll } from '@/app/api/list';
+
+import { ProductData, SelectedColors } from '@/app/types/product';
 import BasicCardClient from '@/app/components/BasicCardClient';
-import { SelectedColors } from '@/app/types/product';
+import { getListAll } from '@/app/api/list';
 
-export default async function Home() {
-  try {
-    const response = await getListAll();
-    const list = response.status === 200 ? response.data.list : [];
-    
-    const initialColors = list.reduce((acc: SelectedColors, item) => {
-      if (item.colorBg?.length > 0) {
-        acc[item.id] = item.colorBg[0].id;
-      }
-      return acc;
-    }, {});
-
-    return <BasicCardClient initialData={list} initialColors={initialColors} />;
-  } catch (error) {
-    console.error('Failed to load data:', error);
-    return <div>Failed to load data. Please try again later.</div>;
+async function getData() {
+  const response = await getListAll();
+  if (response.status === 200) {
+    return response.data.list;
   }
+  return [];
+}
+
+export default async function BasicCard() {
+  const listData = await getData();
+  const initialColors: SelectedColors = {};
+  
+  listData.forEach(item => {
+    if (item.colorBg.length > 0) {
+      initialColors[item.id] = item.colorBg[0].id;
+    }
+  });
+
+  return <BasicCardClient initialData={listData} initialColors={initialColors} />;
 }

@@ -1,11 +1,7 @@
 import axiosInstance from "@/app/utils/axios";
 
-interface GetListParams {
-  color?: string;
-}
-
-const getListAll = (params: GetListParams) => {
-  return axiosInstance.post("/list", params);
+const getListAll = () => {
+  return axiosInstance.post("/list");
 };
 
 export { getListAll };
