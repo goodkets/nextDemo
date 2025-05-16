@@ -20,41 +20,41 @@ interface BasicCardClientProps {
 export default function BasicCardClient({ initialData, initialColors }: BasicCardClientProps) {
   const [listData] = useState<ProductData[]>(initialData);
   const [selectedColors, setSelectedColors] = useState<SelectedColors>(initialColors);
-    // 预加载图片
-    const preloadImages = async (data: ProductData[]) => {
-        const imagePromises = data.flatMap((item) => 
-          item.swiperData
-            .find(data => data.id === selectedColors[item.id])?.images
-            .map(slide => {
-              return new Promise((resolve, reject) => {
-                // 使用浏览器原生的 Image 对象
-                const img = new window.Image();
-                img.src = slide.url ? slide.url.trim() : '';
-                
-                const timer = setTimeout(() => {
-                  reject(new Error('Image load timeout'));
-                }, 3000); 
+    const [isPreloading, setIsPreloading] = useState<boolean>(false);
     
-                img.onload = () => {
-                  clearTimeout(timer);
-                  resolve(null);
-                };
-                
-                img.onerror = () => {
-                  clearTimeout(timer);
-                  // 失败后重试一次
-                  const retryImg = new window.Image();
-                  retryImg.src = slide.url ? slide.url.trim() : '';
-                  retryImg.onload = resolve;
-                  retryImg.onerror = reject;
-                };
-              });
-            }) || []
+    const preloadImages = async (data: ProductData[]) => {
+        if (isPreloading) return; // 避免重复预加载
+        setIsPreloading(true);
+        
+        const imagePromises = data.flatMap((item) => 
+            item.swiperData
+                .find(data => data.id === selectedColors[item.id])?.images
+                .map(slide => {
+                    return new Promise((resolve, reject) => {
+                        const img = new window.Image();
+                        img.src = slide.url ? slide.url.trim() : '';
+                        img.onload = resolve;
+                        img.onerror = reject;
+                    });
+                }) || []
         );
-
-        return Promise.allSettled(imagePromises);
-      };
-
+    
+        try {
+            await Promise.all(imagePromises);
+        } catch (error) {
+            console.error('Image preload error:', error);
+        } finally {
+            setIsPreloading(false);
+        }
+    };
+    
+    useEffect(() => {
+        // 当颜色选择改变时，预加载新选择的颜色对应的图片
+        const selectedItem = listData.find(item => selectedColors[item.id] !== undefined);
+        if (selectedItem) {
+            preloadImages([selectedItem]);
+        }
+    }, [selectedColors]);
   useEffect(() => {
     // 预加载前三个卡片的图片
     const visibleCards = listData.slice(0, 3);
